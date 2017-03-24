@@ -11,6 +11,10 @@ public class SingleItem {
     private String shippingPrice;
     private String shippingTime;
 
+    public SingleItem(String itemTitle){
+        this.itemTitle=itemTitle;
+    }
+
     public String getItemId() {
         return itemId;
     }
