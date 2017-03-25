@@ -60,16 +60,16 @@ public class SingleItemActivity extends AppCompatActivity {
 
         Glide.with(itemViewImage.getContext()).load(imageString).into(itemViewImage);
         itemTitle.setText(getIntent().getStringExtra(TITLE_KEY));
-        itemPrice.setText("Kup teraz: " + getIntent().getStringExtra(PRICE_KEY) + " zł");
+        itemPrice.setText(getIntent().getStringExtra(PRICE_KEY) + " zł");
 
         if(getIntent().getStringExtra(SHIPP_TIME_KEY).equals("0")){
-            itemShippingTime.setText("Dostawa od ręki");
+            itemShippingTime.setText("od ręki");
         }
         else if(getIntent().getStringExtra(SHIPP_TIME_KEY).equals("1")){
-            itemShippingTime.setText("Czas dostawy: 1 dzień");
+            itemShippingTime.setText("1 dzień");
         }
         else{
-            itemShippingTime.setText("Czas dostawy: " + getIntent().getStringExtra(SHIPP_TIME_KEY) + " dni");
+            itemShippingTime.setText(getIntent().getStringExtra(SHIPP_TIME_KEY) + " dni");
         }
         allegroItemUrl = "http://allegro.pl/" + itemName + "-i" + itemId + ".html";
         Log.d("adres", allegroItemUrl);
