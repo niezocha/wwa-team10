@@ -12,9 +12,9 @@ public class QueryGenerator {
 
     private static final String[] tags = {"inspirującego", "dla niej", "dla niego", "dla dziecka", "dla domu", "z prezentów"};
     private static final String[] tagsVal = {"allegropl", "dlaniej", "dlaniego", "dziecko", "dom", "gadzet"};
-    private static final String[] prices = {"dowolnej kwoty", "do 50 zł", "do 100 zł", "do 200 zł"};
+    private static final String[] prices = {"dowolnej ceny", "do 50 zł", "do 100 zł", "do 200 zł"};
     private static final String[] pricesVal = {"0", "50", "100", "200"};
-    private static final String[] sorting = {"losowo", "najtańszych", "najdroższych", "najpopularniejszych"};
+    private static final String[] sorting = {"losowo", "od najtańszych", "od najdroższych", "od najpopularniejszych"};
     private static final String[] sortingVal = {"random", "cheapest", "most_expensive", "most_popular"};
 
     private Map<String, String> tagsMap = generateMap(tags, tagsVal);
