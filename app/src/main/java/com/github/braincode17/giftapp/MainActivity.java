@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
             }
         });
     }
-    
+
     private void updatedSearch() {
         queryGenerator.updateQuery();
         SearchService searchService = retrofit.create(SearchService.class);
