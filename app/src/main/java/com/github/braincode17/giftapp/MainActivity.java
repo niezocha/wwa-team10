@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.github.braincode17.giftapp.SearchList.BaseSearchResult;
 import com.github.braincode17.giftapp.SearchList.OnItemClick;
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
     }
 
     private void error(Throwable throwable) {
-
+        Toast.makeText(this, "Błąd pobierania danych. Sprawdź połączenie do sieci.", Toast.LENGTH_LONG).show();
     }
 
     private void success(List<BaseSearchResult> singleSearchResults) {
