@@ -108,13 +108,13 @@ public class QueryGenerator {
         return map;
     }
 
-    public void updateQuery(){
+    public void updateQuery() {
         setTag();
         setPrice();
         setSort();
     }
 
-    public void clearQuery(){
+    public void clearQuery() {
         setTagSelected("inspirującego");
         setPriceSelected("dowolnej kwoty");
         setSortSelected("losowo");

@@ -18,26 +18,15 @@
 
     <TextView
         android:id="@+id/listing_price"
-        tools:text="19.99 zł"
-        android:textSize="20sp"
-        android:layout_margin="5dp"
-        android:paddingLeft="5dp"
-        android:paddingBottom="25dp"
+        tools:text="19.99zł"
+        android:textSize="30sp"
+        android:textStyle="bold|italic"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_margin="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/listing_image"
         android:layout_alignLeft="@+id/listing_image"
         />
-    <TextView
-        android:id="@+id/item_price"
-        android:textSize="20sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:paddingBottom="25dp"
-        android:layout_alignBottom="@id/listing_image"
-        android:layout_toRightOf="@+id/listing_price"
-        android:text="@string/zl"/>
-
 
 </RelativeLayout>

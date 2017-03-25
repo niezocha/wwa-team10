@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -40,8 +41,14 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
-    @BindView(R.id.spinner)
-    Spinner spinner;
+    @BindView(R.id.spinner_tag)
+    Spinner spinnerTag;
+
+    @BindView(R.id.spinner_price)
+    Spinner spinnerPrice;
+
+    @BindView(R.id.spinner_sort)
+    Spinner spinnerSort;
 
     List<BaseSearchResult> itemsList;
 
@@ -55,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_gift);
 
         retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -108,15 +115,14 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.search_tag) {
-            setSpinner(queryGenerator.getTags());
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            setSpinner(queryGenerator.getTags(), spinnerTag);
+            spinnerTag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 private String tagSelected;
 
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    tagSelected = spinner.getItemAtPosition(position).toString();
+                    tagSelected = spinnerTag.getItemAtPosition(position).toString();
                     if (!tagSelected.equals("inspirującego")) {
-                        spinner.setVisibility(View.GONE);
                         queryGenerator.setTagSelected(tagSelected);
                         updatedSearch();
                     }
@@ -127,16 +133,14 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
                 }
             });
         } else if (item.getItemId() == R.id.search_price) {
-            Log.d("menu_item", "wybór ceny");
-            setSpinner(queryGenerator.getPrices());
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            setSpinner(queryGenerator.getPrices(), spinnerPrice);
+            spinnerPrice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 private String priceSelected;
 
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    priceSelected = spinner.getItemAtPosition(position).toString();
+                    priceSelected = spinnerPrice.getItemAtPosition(position).toString();
                     if (!priceSelected.equals("dowolnej kwoty")) {
-                        spinner.setVisibility(View.GONE);
                         queryGenerator.setPriceSelected(priceSelected);
                         updatedSearch();
                     }
@@ -147,16 +151,14 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
                 }
             });
         } else if (item.getItemId() == R.id.search_sorting) {
-            Log.d("menu_item", "wybór kolejności");
-            setSpinner(queryGenerator.getSorting());
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            setSpinner(queryGenerator.getSorting(), spinnerSort);
+            spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 private String sortSelected;
 
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    sortSelected = spinner.getItemAtPosition(position).toString();
+                    sortSelected = spinnerSort.getItemAtPosition(position).toString();
                     if (!sortSelected.equals("losowo")) {
-                        spinner.setVisibility(View.GONE);
                         queryGenerator.setSortSelected(sortSelected);
                         updatedSearch();
                     }
@@ -167,8 +169,10 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
                 }
             });
         } else if (item.getItemId() == R.id.search_clear) {
+            spinnerTag.setVisibility(View.GONE);
+            spinnerPrice.setVisibility(View.GONE);
+            spinnerSort.setVisibility(View.GONE);
             queryGenerator.clearQuery();
-            spinner.setVisibility(View.GONE);
             updatedSearch();
         }
         return super.onOptionsItemSelected(item);
@@ -180,10 +184,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
         startActivity(intent);
     }
 
-    private void setSpinner(String[] objects) {
+    private void setSpinner(String[] objects, Spinner spinner) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, objects);
         spinner.setAdapter(adapter);
         spinner.setVisibility(View.VISIBLE);
     }
-
 }
