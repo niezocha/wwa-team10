@@ -1,11 +1,10 @@
 package com.github.braincode17.giftapp;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.v4.view.ViewPager;
-import android.support.design.widget.TabLayout;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +15,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.github.braincode17.giftapp.SearchList.BaseSearchResult;
+import com.github.braincode17.giftapp.SearchList.OnItemClick;
 import com.github.braincode17.giftapp.SearchList.SearchService;
+import com.github.braincode17.giftapp.singleItem.SingleItemActivity;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -33,7 +34,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnItemClick{
 
 
     private String tag = "allegropl";
@@ -56,17 +57,19 @@ public class MainActivity extends AppCompatActivity {
     Map<String, String> pricesMap;
     Map<String, String> sortingsMap;
 
-    @BindView(R.id.view_pager)
-    ViewPager viewPager;
 
-    @BindView(R.id.tab_layout)
-    TabLayout tabLayout;
+
+
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
 
     @BindView(R.id.spinner)
     Spinner spinner;
 
     List<BaseSearchResult> itemsList;
-    private ItemsPagerAdapter adapter;
+
+    private LinearLayoutManager layoutManager;
+    private SerchRusultAdapter serchRusultAdapter;
 
     private String tagSelected;
     private String priceSelected;
@@ -126,12 +129,15 @@ public class MainActivity extends AppCompatActivity {
 
         updatedSearch();
 
-        tabLayout.setupWithViewPager(viewPager);
+
         itemsList = new ArrayList<>();
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        adapter = new ItemsPagerAdapter(itemsList, sharedPreferences);
-        viewPager.setAdapter(adapter);
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        serchRusultAdapter = new SerchRusultAdapter();
+        serchRusultAdapter.setOnItemClick(this);
+        recyclerView.setAdapter(serchRusultAdapter);
+
 
 
         tagsMap = generateMap(tags, tagsVal);
@@ -145,10 +151,11 @@ public class MainActivity extends AppCompatActivity {
         searchService.search(tag, price, sort)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(Observable::fromIterable)
-                .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getId(), singleSearchResult.getName(), singleSearchResult.getGalleryImage().getUrlImage()))
+                .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getId(), singleSearchResult.getGalleryImage().getUrl(), singleSearchResult.getName(),
+                        String.valueOf(singleSearchResult.getPrice()), String.valueOf(singleSearchResult.getDeliveryCost()), String.valueOf(singleSearchResult.getDaliveryTime())))
                 .toList()
                 .subscribe(this::success, this::error
-       );
+                );
     }
 
     private void error(Throwable throwable) {
@@ -156,8 +163,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void success(List<BaseSearchResult> singleSearchResults) {
-
-
+        serchRusultAdapter.setList(singleSearchResults);
     }
 
     @Override
@@ -237,6 +243,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void setSpinner(String[] strings) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, strings);
+
+
+    @Override
+    public void onItemClick(String id, String url, String title, String price, String shippPirce, String shippTime) {
+        Intent intent = SingleItemActivity.createIntent(this, id, url, title, price, shippPirce, shippTime);
+        startActivity(intent);
+    }
+
+
+    private void setSpinner(String[] objects) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, objects);
         spinner.setAdapter(adapter);
         spinner.setVisibility(View.VISIBLE);
     }

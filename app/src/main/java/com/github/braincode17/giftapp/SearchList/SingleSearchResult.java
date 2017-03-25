@@ -79,6 +79,7 @@ public class SingleSearchResult {
     }
 
    public SingleGalleryImage getGalleryImage(){
+
        return galleryImage;
    }
 }
