@@ -1,8 +1,8 @@
 package com.github.braincode17.giftapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,13 +12,18 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.github.braincode17.giftapp.SearchList.BaseSearchResult;
 import com.github.braincode17.giftapp.SearchList.OnItemClick;
 import com.github.braincode17.giftapp.SearchList.SearchService;
 import com.github.braincode17.giftapp.singleItem.SingleItemActivity;
 
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -26,39 +31,10 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+public class MainActivity extends AppCompatActivity implements OnItemClick {
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-public class MainActivity extends AppCompatActivity implements OnItemClick{
-
-
-    private String tag = "allegropl";
-    private String price = "0";
-    private String sort = "random";
-    private String defUrl = "https://inspiracje.allegro.pl/api/";
-    private String urlSearch = "http://inspiracje.allegro.pl/api/offers/";
+    private QueryGenerator queryGenerator = new QueryGenerator();
     private Retrofit retrofit;
-
-    private static final String[] tags = {"inspirującego","dla niej", "dla niego", "dla dziecka", "dla domu", "z prezentów"};
-    private static final String [] tagsVal = {"allegropl", "dlaniej", "dlaniego", "dziecko", "dom", "gadzet"};
-
-    private static final String[] prices = {"dowolnej kwoty", "do 50 zł", "do 100 zł", "do 200 zł"};
-    private static final String[] pricesVal = {"0", "50", "100", "200"};
-
-    private static final String[] sorting = {"losowo", "najtańszych", "najdroższych", "najpopularniejszych"};
-    private static final String[] sortingVal = {"random", "cheapest", "most_expencive", "most_popular"};
-
-    Map<String, String> tagsMap;
-    Map<String, String> pricesMap;
-    Map<String, String> sortingsMap;
-
-
-
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -71,49 +47,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
     private LinearLayoutManager layoutManager;
     private SerchRusultAdapter serchRusultAdapter;
 
-    private String tagSelected;
-    private String priceSelected;
-    private String sortSelected;
-
-
-    public void setTag() {
-        String tag = tagsMap.get(tagSelected);
-        this.tag = tag;
-    }
-
-    public void setPrice() {
-        String price = pricesMap.get(priceSelected);
-        this.price = price;
-    }
-
-    public void setSort() {
-        String sort = sortingsMap.get(sortSelected);
-        this.sort = sort;
-    }
-
-    public String getTagSelected() {
-        return tagSelected;
-    }
-
-    public String getPriceSelected() {
-        return priceSelected;
-    }
-
-    public String getSortSelected() {
-        return sortSelected;
-    }
-
-    public void setTagSelected(String tagSelected) {
-        this.tagSelected = tagSelected;
-    }
-
-    public void setPriceSelected(String priceSelected) {
-        this.priceSelected = priceSelected;
-    }
-
-    public void setSortSelected(String sortSelected) {
-        this.sortSelected = sortSelected;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,13 +55,13 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(urlSearch).build();
+                .baseUrl(queryGenerator.getUrlSearch()).build();
 
         updatedSearch();
-
 
         itemsList = new ArrayList<>();
 
@@ -138,21 +71,18 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
         serchRusultAdapter.setOnItemClick(this);
         recyclerView.setAdapter(serchRusultAdapter);
 
-
-
-        tagsMap = generateMap(tags, tagsVal);
-        pricesMap = generateMap(prices, pricesVal);
-        sortingsMap = generateMap(sorting, sortingVal);
-
     }
 
     private void updatedSearch() {
+        queryGenerator.updateQuery();
         SearchService searchService = retrofit.create(SearchService.class);
-        searchService.search(tag, price, sort)
+        NumberFormat format = NumberFormat.getInstance();
+        format.setMinimumFractionDigits(2);
+                searchService.search(queryGenerator.getTag(), queryGenerator.getPrice(), queryGenerator.getSort())
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(Observable::fromIterable)
-                .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getId(), singleSearchResult.getGalleryImage().getUrl(), singleSearchResult.getName(),
-                        String.valueOf(singleSearchResult.getPrice()), String.valueOf(singleSearchResult.getDeliveryCost()), String.valueOf(singleSearchResult.getDaliveryTime())))
+                .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getItemId(), singleSearchResult.getGalleryImage().getUrl(), singleSearchResult.getName(),
+                        String.valueOf(format.format(singleSearchResult.getPrice())), String.valueOf(singleSearchResult.getDeliveryCost()), String.valueOf(singleSearchResult.getDeliveryTime())))
                 .toList()
                 .subscribe(this::success, this::error
                 );
@@ -175,66 +105,67 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId() == R.id.search_tag){
-            setSpinner(tags);
+        if (item.getItemId() == R.id.search_tag) {
+            setSpinner(queryGenerator.getTags());
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 private String tagSelected;
+
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     tagSelected = spinner.getItemAtPosition(position).toString();
-                    if(!tagSelected.equals("inspirującego")){
+                    if (!tagSelected.equals("inspirującego")) {
                         spinner.setVisibility(View.GONE);
-                        setTagSelected(tagSelected);
+                        queryGenerator.setTagSelected(tagSelected);
                         updatedSearch();
                     }
                 }
+
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
-        }
-        else if(item.getItemId() == R.id.search_price){
+        } else if (item.getItemId() == R.id.search_price) {
             Log.d("menu_item", "wybór ceny");
-            setSpinner(prices);
+            setSpinner(queryGenerator.getPrices());
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 private String priceSelected;
+
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     priceSelected = spinner.getItemAtPosition(position).toString();
-                    if(!priceSelected.equals("dowolnej kwoty")){
+                    if (!priceSelected.equals("dowolnej kwoty")) {
                         spinner.setVisibility(View.GONE);
-                        setPriceSelected(priceSelected);
+                        queryGenerator.setPriceSelected(priceSelected);
                         updatedSearch();
                     }
                 }
+
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
-        }
-        else if(item.getItemId() == R.id.search_sorting){
+        } else if (item.getItemId() == R.id.search_sorting) {
             Log.d("menu_item", "wybór kolejności");
-            setSpinner(sorting);
+            setSpinner(queryGenerator.getSorting());
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 private String sortSelected;
+
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     sortSelected = spinner.getItemAtPosition(position).toString();
-                    if(!sortSelected.equals("losowo")){
+                    if (!sortSelected.equals("losowo")) {
                         spinner.setVisibility(View.GONE);
-                        setSortSelected(sortSelected);
+                        queryGenerator.setSortSelected(sortSelected);
                         updatedSearch();
                     }
                 }
+
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
-        }
-        else if(item.getItemId() == R.id.search_clear){
-            setTagSelected("inspirującego");
-            setPriceSelected("dowolnej kwoty");
-            setSortSelected("losowo");
+        } else if (item.getItemId() == R.id.search_clear) {
+            queryGenerator.clearQuery();
             spinner.setVisibility(View.GONE);
             updatedSearch();
         }
@@ -251,19 +182,10 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
         startActivity(intent);
     }
 
-
     private void setSpinner(String[] objects) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, objects);
         spinner.setAdapter(adapter);
         spinner.setVisibility(View.VISIBLE);
-    }
-
-    public Map<String, String> generateMap(String[] list1, String[] list2){
-        Map<String, String> map = new HashMap<>();
-        for (int i=0; i<list1.length; i++){
-            map.put(list1[i], list2[i]);
-        }
-        return map;
     }
 
 }
