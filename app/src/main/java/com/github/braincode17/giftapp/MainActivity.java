@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
 
     private void success(List<BaseSearchResult> singleSearchResults) {
         serchRusultAdapter.setList(singleSearchResults);
+
     }
 
     @Override
