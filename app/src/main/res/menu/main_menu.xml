@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/search_sorting"
-        android:title="pokaż w kolejności od..."
+        android:title="Pokaż w kolejności od..."
         android:icon="@drawable/ic_search_listing"
         app:showAsAction="never"
         />

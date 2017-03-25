@@ -235,8 +235,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setSpinner(String[] objects) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, objects);
+    private void setSpinner(String[] strings) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, strings);
         spinner.setAdapter(adapter);
         spinner.setVisibility(View.VISIBLE);
     }
