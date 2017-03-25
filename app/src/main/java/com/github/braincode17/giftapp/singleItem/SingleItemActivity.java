@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -44,7 +45,9 @@ public class SingleItemActivity extends AppCompatActivity {
     @BindView(R.id.allegro_button)
     Button allegroButton;
 
+    private String itemId;
     private String allegroItemUrl;
+    private String itemName;
 
     private static final String ID_KEY = "id_key";
     private static final String IMAGE_KEY = "image_key";
@@ -63,12 +66,16 @@ public class SingleItemActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         String imageString = getIntent().getStringExtra(IMAGE_KEY);
+        itemId = getIntent().getStringExtra(ID_KEY);
+        itemName = getIntent().getStringExtra(TITLE_KEY);
+
         Glide.with(itemViewImage.getContext()).load(imageString).into(itemViewImage);
         itemTitle.setText(getIntent().getStringExtra(TITLE_KEY));
         itemPrice.setText(getIntent().getStringExtra(PRICE_KEY) + " zł");
         itemShippingPrice.setText(getIntent().getStringExtra(SHIPP_PRICE_KEY + " zł"));
         itemShippingTime.setText(getIntent().getStringExtra(SHIPP_TIME_KEY + "dni"));
-        allegroItemUrl = getIntent().getStringExtra(IMAGE_KEY);
+        allegroItemUrl = "http://allegro.pl/" + itemName + "-i" + itemId + ".html";
+        Log.d("adres", allegroItemUrl);
 
 
         allegroButton.setOnClickListener(v -> {

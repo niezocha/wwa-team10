@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
         searchService.search(tag, price, sort)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(Observable::fromIterable)
-                .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getId(), singleSearchResult.getGalleryImage().getUrl(), singleSearchResult.getName(),
+                .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getItemId(), singleSearchResult.getGalleryImage().getUrl(), singleSearchResult.getName(),
                         String.valueOf(singleSearchResult.getPrice()), String.valueOf(singleSearchResult.getDeliveryCost()), String.valueOf(singleSearchResult.getDaliveryTime())))
                 .toList()
                 .subscribe(this::success, this::error
