@@ -33,6 +33,7 @@ public class SingleSearchResult {
     }
 
     public BigDecimal getPrice() {
+        Log.d("cena", price.toString());
         return price;
     }
 
