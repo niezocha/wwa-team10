@@ -3,7 +3,7 @@ package com.github.braincode17.giftapp;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UrlGenerator {
+public class QueryGenerator {
 
     private String tag = "allegropl";
     private String price = "0";

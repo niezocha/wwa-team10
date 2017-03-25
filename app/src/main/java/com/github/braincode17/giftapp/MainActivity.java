@@ -32,7 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements OnItemClick {
 
-    private UrlGenerator urlGenerator = new UrlGenerator();
+    private QueryGenerator queryGenerator = new QueryGenerator();
     private Retrofit retrofit;
 
     @BindView(R.id.recycler_view)
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
         retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(urlGenerator.getUrlSearch()).build();
+                .baseUrl(queryGenerator.getUrlSearch()).build();
 
         updatedSearch();
 
@@ -73,9 +73,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
     }
 
     private void updatedSearch() {
-        urlGenerator.updateUrlGenerator();
+        queryGenerator.updateUrlGenerator();
         SearchService searchService = retrofit.create(SearchService.class);
-        searchService.search(urlGenerator.getTag(), urlGenerator.getPrice(), urlGenerator.getSort())
+        searchService.search(queryGenerator.getTag(), queryGenerator.getPrice(), queryGenerator.getSort())
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(Observable::fromIterable)
                 .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getItemId(), singleSearchResult.getGalleryImage().getUrl(), singleSearchResult.getName(),
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.search_tag) {
-            setSpinner(urlGenerator.getTags());
+            setSpinner(queryGenerator.getTags());
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 private String tagSelected;
 
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
                     tagSelected = spinner.getItemAtPosition(position).toString();
                     if (!tagSelected.equals("inspirującego")) {
                         spinner.setVisibility(View.GONE);
-                        urlGenerator.setTagSelected(tagSelected);
+                        queryGenerator.setTagSelected(tagSelected);
                         updatedSearch();
                     }
                 }
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
             });
         } else if (item.getItemId() == R.id.search_price) {
             Log.d("menu_item", "wybór ceny");
-            setSpinner(urlGenerator.getPrices());
+            setSpinner(queryGenerator.getPrices());
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 private String priceSelected;
 
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
                     priceSelected = spinner.getItemAtPosition(position).toString();
                     if (!priceSelected.equals("dowolnej kwoty")) {
                         spinner.setVisibility(View.GONE);
-                        urlGenerator.setPriceSelected(priceSelected);
+                        queryGenerator.setPriceSelected(priceSelected);
                         updatedSearch();
                     }
                 }
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
             });
         } else if (item.getItemId() == R.id.search_sorting) {
             Log.d("menu_item", "wybór kolejności");
-            setSpinner(urlGenerator.getSorting());
+            setSpinner(queryGenerator.getSorting());
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 private String sortSelected;
 
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
                     sortSelected = spinner.getItemAtPosition(position).toString();
                     if (!sortSelected.equals("losowo")) {
                         spinner.setVisibility(View.GONE);
-                        urlGenerator.setSortSelected(sortSelected);
+                        queryGenerator.setSortSelected(sortSelected);
                         updatedSearch();
                     }
                 }
@@ -162,9 +162,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
                 }
             });
         } else if (item.getItemId() == R.id.search_clear) {
-            urlGenerator.setTagSelected("inspirującego");
-            urlGenerator.setPriceSelected("dowolnej kwoty");
-            urlGenerator.setSortSelected("losowo");
+            queryGenerator.setTagSelected("inspirującego");
+            queryGenerator.setPriceSelected("dowolnej kwoty");
+            queryGenerator.setSortSelected("losowo");
             spinner.setVisibility(View.GONE);
             updatedSearch();
         }
