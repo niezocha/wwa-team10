@@ -10,14 +10,16 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.braincode17.giftapp.SearchList.BaseSearchResult;
+
 import java.util.List;
 
 public class ItemsPagerAdapter extends PagerAdapter {
 
     private SharedPreferences sharedPreferences;
-    private List<SingleItem> items;
+    private List<BaseSearchResult> items;
 
-    public ItemsPagerAdapter(List<SingleItem> items, SharedPreferences preferences) {
+    public ItemsPagerAdapter(List<BaseSearchResult> items, SharedPreferences preferences) {
         this.items = items;
         this.sharedPreferences=preferences;
     }

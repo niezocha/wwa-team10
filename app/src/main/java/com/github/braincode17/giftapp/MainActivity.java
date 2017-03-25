@@ -11,9 +11,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.github.braincode17.giftapp.SearchList.BaseSearchResult;
 import com.github.braincode17.giftapp.SearchList.SearchService;
+import com.github.braincode17.giftapp.SearchList.SingleGalleryImage;
+import com.github.braincode17.giftapp.SearchList.SingleSearchResult;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -37,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
 
-    List<SingleItem> itemsList;
+    List<BaseSearchResult> itemsList;
+    private ItemsPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +58,13 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(urlSearch).build();
 
-        SearchService searchService = retrofit.create(SearchService.class);
-        searchService.search("dlaniej", "200", "random")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+        updatedSearch("dlaniej", "200", "random");
 
         tabLayout.setupWithViewPager(viewPager);
         itemsList = new ArrayList<>();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        ItemsPagerAdapter adapter = new ItemsPagerAdapter(itemsList, sharedPreferences);
+        adapter = new ItemsPagerAdapter(itemsList, sharedPreferences);
         viewPager.setAdapter(adapter);
     }
 
@@ -69,6 +72,26 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void updatedSearch(String tag, String price, String sort) {
+        SearchService searchService = retrofit.create(SearchService.class);
+        searchService.search(tag, price, sort)
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .flatMap(Observable::fromIterable)
+                .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getId(), singleSearchResult.getName(), singleSearchResult.getGalleryImage().getUrlImage()))
+                .toList()
+                .subscribe(this::success, this::error
+       );
+    }
+
+    private void error(Throwable throwable) {
+
+    }
+
+    private void success(List<BaseSearchResult> singleSearchResults) {
+
+
     }
 
     @Override

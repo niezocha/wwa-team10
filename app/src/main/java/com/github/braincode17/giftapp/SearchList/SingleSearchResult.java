@@ -2,7 +2,6 @@ package com.github.braincode17.giftapp.SearchList;
 
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public class SingleSearchResult {
 
