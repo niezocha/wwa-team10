@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
 
     private QueryGenerator queryGenerator = new QueryGenerator();
     private Retrofit retrofit;
+    private List<BaseSearchResult> itemsList;
+    private LinearLayoutManager layoutManager;
+    private SerchRusultAdapter serchRusultAdapter;
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -49,12 +52,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
 
     @BindView(R.id.spinner_sort)
     Spinner spinnerSort;
-
-    List<BaseSearchResult> itemsList;
-
-    private LinearLayoutManager layoutManager;
-    private SerchRusultAdapter serchRusultAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
