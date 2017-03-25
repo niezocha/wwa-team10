@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
         SearchService searchService = retrofit.create(SearchService.class);
         NumberFormat format = NumberFormat.getInstance();
         format.setMinimumFractionDigits(2);
+
         searchService.search(queryGenerator.getTag(), queryGenerator.getPrice(), queryGenerator.getSort(), String.valueOf(queryCounter))
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(Observable::fromIterable)
@@ -160,8 +162,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             queryCounter += 10;
+            Log.d("counter", String.valueOf(queryCounter));
             updatedSearch();
         }
         return super.onOptionsItemSelected(item);
