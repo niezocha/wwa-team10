@@ -74,6 +74,53 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
         serchRusultAdapter = new SerchRusultAdapter();
         serchRusultAdapter.setOnItemClick(this);
         recyclerView.setAdapter(serchRusultAdapter);
+
+        setSpinner(queryGenerator.getTags(), spinnerTag);
+        setSpinner(queryGenerator.getPrices(), spinnerPrice);
+        setSpinner(queryGenerator.getSorting(), spinnerSort);
+
+        spinnerTag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String tagSelected = spinnerTag.getItemAtPosition(position).toString();
+                if (!tagSelected.equals("inspirującego")) {
+                    queryGenerator.setTagSelected(tagSelected);
+                    updatedSearch();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        spinnerPrice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String priceSelected = spinnerPrice.getItemAtPosition(position).toString();
+                if (!priceSelected.equals("dowolnej kwoty")) {
+                    queryGenerator.setPriceSelected(priceSelected);
+                    updatedSearch();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String sortSelected = spinnerSort.getItemAtPosition(position).toString();
+                if (!sortSelected.equals("losowo")) {
+                    queryGenerator.setSortSelected(sortSelected);
+                    updatedSearch();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
     }
 
 
@@ -102,79 +149,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.search_tag) {
-            setSpinner(queryGenerator.getTags(), spinnerTag);
-            spinnerTag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                private String tagSelected;
-
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    tagSelected = spinnerTag.getItemAtPosition(position).toString();
-                    if (!tagSelected.equals("inspirującego")) {
-                        queryGenerator.setTagSelected(tagSelected);
-                        updatedSearch();
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
-            });
-        } else if (item.getItemId() == R.id.search_price) {
-            setSpinner(queryGenerator.getPrices(), spinnerPrice);
-            spinnerPrice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                private String priceSelected;
-
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    priceSelected = spinnerPrice.getItemAtPosition(position).toString();
-                    if (!priceSelected.equals("dowolnej kwoty")) {
-                        queryGenerator.setPriceSelected(priceSelected);
-                        updatedSearch();
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
-            });
-        } else if (item.getItemId() == R.id.search_sorting) {
-            setSpinner(queryGenerator.getSorting(), spinnerSort);
-            spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                private String sortSelected;
-
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    sortSelected = spinnerSort.getItemAtPosition(position).toString();
-                    if (!sortSelected.equals("losowo")) {
-                        queryGenerator.setSortSelected(sortSelected);
-                        updatedSearch();
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
-            });
-        } else if (item.getItemId() == R.id.search_clear) {
-            spinnerTag.setVisibility(View.GONE);
-            spinnerPrice.setVisibility(View.GONE);
-            spinnerSort.setVisibility(View.GONE);
-            queryGenerator.clearQuery();
-            updatedSearch();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onItemClick(String id, String url, String title, String price, String shippPirce, String shippTime) {
         Intent intent = SingleItemActivity.createIntent(this, id, url, title, price, shippPirce, shippTime);
         startActivity(intent);
@@ -183,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
     private void setSpinner(String[] objects, Spinner spinner) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, objects);
         spinner.setAdapter(adapter);
-        spinner.setVisibility(View.VISIBLE);
     }
 
 

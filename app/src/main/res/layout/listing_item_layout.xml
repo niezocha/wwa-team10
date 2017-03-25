@@ -19,7 +19,7 @@
     <TextView
         android:id="@+id/listing_price"
         tools:text="19.99zł"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:textStyle="bold|italic"
         android:textColor="@color/colorPrimaryDark"
         android:layout_margin="20dp"

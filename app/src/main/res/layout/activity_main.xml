@@ -8,32 +8,40 @@
     android:orientation="vertical"
     tools:context="com.github.braincode17.giftapp.MainActivity">
 
-<LinearLayout
+    <TextView
+        android:id="@+id/text_view_whatlookingfor"
+        android:text="Szukam czegoś..."
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold|italic"
+        android:textSize="25sp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
     android:id="@+id/spinner_layout"
     android:orientation="horizontal"
+    android:gravity="center_horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <Spinner
         android:id="@+id/spinner_tag"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <Spinner
         android:id="@+id/spinner_price"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <Spinner
         android:id="@+id/spinner_sort"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
 </LinearLayout>
-
 
    <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
