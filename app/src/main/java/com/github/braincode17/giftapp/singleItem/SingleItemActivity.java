@@ -33,9 +33,6 @@ public class SingleItemActivity extends AppCompatActivity {
     @BindView(R.id.item_shippingtime)
     TextView itemShippingTime;
 
-//    @BindView(R.id.item_shippingprice)
-//    TextView itemShippingPrice;
-
     @BindView(R.id.allegro_button)
     Button allegroButton;
 
@@ -64,7 +61,6 @@ public class SingleItemActivity extends AppCompatActivity {
         Glide.with(itemViewImage.getContext()).load(imageString).into(itemViewImage);
         itemTitle.setText(getIntent().getStringExtra(TITLE_KEY));
         itemPrice.setText("Kup teraz: " + getIntent().getStringExtra(PRICE_KEY) + " zł");
-//        itemShippingPrice.setText(getIntent().getStringExtra(SHIPP_PRICE_KEY) + " zł");
 
         if(getIntent().getStringExtra(SHIPP_TIME_KEY).equals("0")){
             itemShippingTime.setText("Dostawa od ręki");
