@@ -17,7 +17,7 @@ public class QueryGenerator {
     private static final String[] pricesVal = {"0", "50", "100", "200"};
 
     private static final String[] sorting = {"losowo", "najtańszych", "najdroższych", "najpopularniejszych"};
-    private static final String[] sortingVal = {"random", "cheapest", "most_expencive", "most_popular"};
+    private static final String[] sortingVal = {"random", "cheapest", "most_expensive", "most_popular"};
 
     Map<String, String> tagsMap;
     Map<String, String> pricesMap;
@@ -108,13 +108,13 @@ public class QueryGenerator {
         return map;
     }
 
-    public void updateQuery(){
+    public void updateQuery() {
         setTag();
         setPrice();
         setSort();
     }
 
-    public void clearQuery(){
+    public void clearQuery() {
         setTagSelected("inspirującego");
         setPriceSelected("dowolnej kwoty");
         setSortSelected("losowo");

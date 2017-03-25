@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_gift);
 
         retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -132,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
                 }
             });
         } else if (item.getItemId() == R.id.search_price) {
-            Log.d("menu_item", "wybór ceny");
             setSpinner(queryGenerator.getPrices(), spinnerPrice);
             spinnerPrice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 private String priceSelected;
@@ -151,7 +150,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
                 }
             });
         } else if (item.getItemId() == R.id.search_sorting) {
-            Log.d("menu_item", "wybór kolejności");
             setSpinner(queryGenerator.getSorting(), spinnerSort);
             spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 private String sortSelected;

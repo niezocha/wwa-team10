@@ -2,6 +2,7 @@
 
     <string name="zl">zł</string>
     <string name="chooser">otwieranie storny allegro..</string>
-    <string name="see">zobacz na allegro</string>
+    <string name="see">allegro</string>
+    <string name="send">wyślij</string>
     <string name="app_name">AllePrezent</string>
 </resources>
