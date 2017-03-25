@@ -4,28 +4,28 @@
 
     <item
         android:id="@+id/search_tag"
-        android:title="tag"
+        android:title="Szukam czegoś..."
         android:icon="@drawable/ic_tag"
-        app:showAsAction="always"
+        app:showAsAction="never"
         />
 
     <item
         android:id="@+id/search_price"
-        android:title="price"
+        android:title="W cenie..."
         android:icon="@drawable/ic_dollar"
-        app:showAsAction="always"
+        app:showAsAction="never"
         />
 
     <item
         android:id="@+id/search_sorting"
-        android:title="listing"
+        android:title="pokaż w kolejności od..."
         android:icon="@drawable/ic_search_listing"
-        app:showAsAction="always"
+        app:showAsAction="never"
         />
 
     <item
         android:id="@+id/search_clear"
-        android:title="listing"
+        android:title="wyczyść"
         android:icon="@drawable/ic_clear"
         app:showAsAction="always"
         />

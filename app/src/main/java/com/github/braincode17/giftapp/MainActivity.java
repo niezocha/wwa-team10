@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String[] tags = {"inspirującego","dla niej", "dla niego", "dla dziecka", "dla domu", "z prezentów"};
     private static final String [] tagsVal = {"allegropl", "dlaniej", "dlaniego", "dziecko", "dom", "gadzet"};
 
-    private static final String[] prices = {"dowolnej kwoty", "50 zł", "100 zł", "200 zł"};
+    private static final String[] prices = {"dowolnej kwoty", "do 50 zł", "do 100 zł", "do 200 zł"};
     private static final String[] pricesVal = {"0", "50", "100", "200"};
 
     private static final String[] sorting = {"losowo", "najtańszych", "najdroższych", "najpopularniejszych"};
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(urlSearch).build();
 
-        updatedSearch(tag, price, sort);
+        updatedSearch();
 
         tabLayout.setupWithViewPager(viewPager);
         itemsList = new ArrayList<>();
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void updatedSearch(String tag, String price, String sort) {
+    private void updatedSearch() {
         SearchService searchService = retrofit.create(SearchService.class);
         searchService.search(tag, price, sort)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -177,9 +177,9 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     tagSelected = spinner.getItemAtPosition(position).toString();
                     if(!tagSelected.equals("inspirującego")){
-                        Toast.makeText(MainActivity.this, tagSelected, Toast.LENGTH_LONG).show();
                         spinner.setVisibility(View.GONE);
                         setTagSelected(tagSelected);
+                        updatedSearch();
                     }
                 }
                 @Override
@@ -196,16 +196,15 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     priceSelected = spinner.getItemAtPosition(position).toString();
                     if(!priceSelected.equals("dowolnej kwoty")){
-                        Toast.makeText(MainActivity.this, priceSelected, Toast.LENGTH_LONG).show();
                         spinner.setVisibility(View.GONE);
                         setPriceSelected(priceSelected);
+                        updatedSearch();
                     }
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
-
         }
         else if(item.getItemId() == R.id.search_sorting){
             Log.d("menu_item", "wybór kolejności");
@@ -216,22 +215,22 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     sortSelected = spinner.getItemAtPosition(position).toString();
                     if(!sortSelected.equals("losowo")){
-                        Toast.makeText(MainActivity.this, sortSelected, Toast.LENGTH_LONG).show();
                         spinner.setVisibility(View.GONE);
                         setSortSelected(sortSelected);
+                        updatedSearch();
                     }
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
-
         }
         else if(item.getItemId() == R.id.search_clear){
             setTagSelected("inspirującego");
             setPriceSelected("dowolnej kwoty");
             setSortSelected("losowo");
             spinner.setVisibility(View.GONE);
+            updatedSearch();
         }
         return super.onOptionsItemSelected(item);
     }
