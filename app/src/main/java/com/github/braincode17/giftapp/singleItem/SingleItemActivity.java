@@ -33,8 +33,8 @@ public class SingleItemActivity extends AppCompatActivity {
     @BindView(R.id.item_shippingtime)
     TextView itemShippingTime;
 
-    @BindView(R.id.item_shippingprice)
-    TextView itemShippingPrice;
+//    @BindView(R.id.item_shippingprice)
+//    TextView itemShippingPrice;
 
     @BindView(R.id.allegro_button)
     Button allegroButton;
@@ -65,7 +65,7 @@ public class SingleItemActivity extends AppCompatActivity {
         itemTitle.setText(getIntent().getStringExtra(TITLE_KEY));
         itemPrice.setText("Kup teraz: " + getIntent().getStringExtra(PRICE_KEY) + " zł");
 //        itemShippingPrice.setText(getIntent().getStringExtra(SHIPP_PRICE_KEY) + " zł");
-        itemShippingTime.setText("Czas dostawy: " + getIntent().getStringExtra(SHIPP_TIME_KEY) + "dni");
+        itemShippingTime.setText("Czas dostawy: " + getIntent().getStringExtra(SHIPP_TIME_KEY) + " dni");
         allegroItemUrl = "http://allegro.pl/" + itemName + "-i" + itemId + ".html";
         Log.d("adres", allegroItemUrl);
 
