@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String tagSelected = spinnerTag.getItemAtPosition(position).toString();
                 queryGenerator.setTagSelected(tagSelected);
+                queryCounter = 0;
                 updatedSearch();
             }
 
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String priceSelected = spinnerPrice.getItemAtPosition(position).toString();
                 queryGenerator.setPriceSelected(priceSelected);
+                queryCounter = 0;
                 updatedSearch();
             }
 
@@ -110,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String sortSelected = spinnerSort.getItemAtPosition(position).toString();
                 queryGenerator.setSortSelected(sortSelected);
+                queryCounter = 0;
                 updatedSearch();
             }
 
