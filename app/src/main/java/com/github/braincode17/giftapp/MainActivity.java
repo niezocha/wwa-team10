@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
         serchRusultAdapter.setOnItemClick(this);
         recyclerView.setAdapter(serchRusultAdapter);
 
+
         setSpinner(queryGenerator.getTags(), spinnerTag);
         setSpinner(queryGenerator.getPrices(), spinnerPrice);
         setSpinner(queryGenerator.getSorting(), spinnerSort);
@@ -120,10 +121,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
     }
-
-
+    
     private void updatedSearch() {
         queryGenerator.updateQuery();
         SearchService searchService = retrofit.create(SearchService.class);
@@ -145,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
 
     private void success(List<BaseSearchResult> singleSearchResults) {
         serchRusultAdapter.setList(singleSearchResults);
-
     }
 
     @Override
@@ -158,6 +156,4 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, objects);
         spinner.setAdapter(adapter);
     }
-
-
 }
