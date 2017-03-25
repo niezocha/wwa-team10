@@ -1,6 +1,8 @@
 package com.github.braincode17.giftapp.SearchList;
 
 
+import android.util.Log;
+
 import java.math.BigDecimal;
 
 public class SingleSearchResult {
@@ -79,6 +81,7 @@ public class SingleSearchResult {
     }
 
    public SingleGalleryImage getGalleryImage(){
+
        return galleryImage;
    }
 }

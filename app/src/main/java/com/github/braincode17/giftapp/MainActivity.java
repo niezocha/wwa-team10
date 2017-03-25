@@ -7,6 +7,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,14 +39,15 @@ public class MainActivity extends AppCompatActivity {
     String urlSearch = "http://inspiracje.allegro.pl/api/offers/";
     private Retrofit retrofit;
 
-    @BindView(R.id.view_pager)
-    ViewPager viewPager;
 
-    @BindView(R.id.tab_layout)
-    TabLayout tabLayout;
+
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
 
     List<BaseSearchResult> itemsList;
-    private ItemsPagerAdapter adapter;
+
+    private LinearLayoutManager layoutManager;
+    private SerchRusultAdapter serchRusultAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,25 +61,24 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(urlSearch).build();
 
-        updatedSearch("dlaniej", "200", "random");
-
-        tabLayout.setupWithViewPager(viewPager);
         itemsList = new ArrayList<>();
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        adapter = new ItemsPagerAdapter(itemsList, sharedPreferences);
-        viewPager.setAdapter(adapter);
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        serchRusultAdapter = new SerchRusultAdapter();
+        recyclerView.setAdapter(serchRusultAdapter);
+        updatedSearch("dlaniej", "200", "random");
     }
-    
+
     private void updatedSearch(String tag, String price, String sort) {
         SearchService searchService = retrofit.create(SearchService.class);
         searchService.search(tag, price, sort)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(Observable::fromIterable)
-                .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getId(), singleSearchResult.getName(), singleSearchResult.getGalleryImage().getUrlImage()))
+                .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getId(), singleSearchResult.getGalleryImage().getUrl(), String.valueOf(singleSearchResult.getPrice())))
                 .toList()
                 .subscribe(this::success, this::error
-       );
+                );
     }
 
     private void error(Throwable throwable) {
@@ -84,8 +86,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void success(List<BaseSearchResult> singleSearchResults) {
-
-
+        serchRusultAdapter.setList(singleSearchResults);
     }
 
     @Override
@@ -97,13 +98,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             super.onBackPressed();
-        }
-        else if(item.getItemId() == R.id.search_price){
+        } else if (item.getItemId() == R.id.search_price) {
             Log.d("menu_item", "wybór ceny");
-        }
-        else if(item.getItemId() == R.id.search_listing){
+        } else if (item.getItemId() == R.id.search_listing) {
             Log.d("menu_item", "wybór kolejności");
         }
         return super.onOptionsItemSelected(item);
