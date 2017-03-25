@@ -1,7 +1,5 @@
 package com.github.braincode17.giftapp;
 
-import java.math.BigDecimal;
-
 public class SingleItem {
 
     private String itemId;
