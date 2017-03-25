@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,6 +38,10 @@ public class SingleItemActivity extends AppCompatActivity {
 
     @BindView(R.id.allegro_button)
     Button allegroButton;
+
+    @BindView(R.id.send_button)
+    Button sendButton;
+
 
     private String itemId;
     private String allegroItemUrl;
@@ -83,6 +88,14 @@ public class SingleItemActivity extends AppCompatActivity {
             String chooserTitle = getString(R.string.chooser);
             Intent chosenIntent = Intent.createChooser(newIntent, chooserTitle);
             startActivity(chosenIntent);
+
+        });
+
+        sendButton.setOnClickListener(v -> {
+            Intent newIntent = new Intent(Intent.ACTION_SEND);
+            newIntent.setType("text/plain");
+            newIntent.putExtra(Intent.EXTRA_TEXT, "AllePomysł na prezent! \n" + allegroItemUrl);
+            startActivity(Intent.createChooser(newIntent, "Send Email"));
 
         });
     }
