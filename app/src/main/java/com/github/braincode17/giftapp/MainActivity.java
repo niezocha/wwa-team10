@@ -7,6 +7,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.github.braincode17.giftapp.SearchList.BaseSearchResult;
 import com.github.braincode17.giftapp.SearchList.SearchService;
@@ -48,8 +51,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        retrofit = new Retrofit.Builder().addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(GsonConverterFactory.create()).baseUrl(urlSearch).build();
+        retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(urlSearch).build();
 
         updatedSearch("dlaniej", "200", "random");
 
@@ -59,9 +66,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         adapter = new ItemsPagerAdapter(itemsList, sharedPreferences);
         viewPager.setAdapter(adapter);
-
     }
-
+    
     private void updatedSearch(String tag, String price, String sort) {
         SearchService searchService = retrofit.create(SearchService.class);
         searchService.search(tag, price, sort)
@@ -82,5 +88,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+        }
+        else if(item.getItemId() == R.id.search_price){
+            Log.d("menu_item", "wybór ceny");
+        }
+        else if(item.getItemId() == R.id.search_listing){
+            Log.d("menu_item", "wybór kolejności");
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
