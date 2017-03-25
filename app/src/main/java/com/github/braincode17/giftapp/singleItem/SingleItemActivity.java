@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,6 +46,8 @@ public class SingleItemActivity extends AppCompatActivity {
     private String allegroItemUrl;
     private String itemName;
 
+
+
     private static final String ID_KEY = "id_key";
     private static final String IMAGE_KEY = "image_key";
     private static final String TITLE_KEY = "title_key";
@@ -60,6 +61,7 @@ public class SingleItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.single_item_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         ButterKnife.bind(this);
         String imageString = getIntent().getStringExtra(IMAGE_KEY);
@@ -125,4 +127,5 @@ public class SingleItemActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

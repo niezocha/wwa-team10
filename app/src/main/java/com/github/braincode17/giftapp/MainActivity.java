@@ -5,13 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -32,6 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class MainActivity extends AppCompatActivity implements OnItemClick {
 
@@ -121,7 +120,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
     }
+
 
     private void updatedSearch() {
         queryGenerator.updateQuery();
@@ -144,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
 
     private void success(List<BaseSearchResult> singleSearchResults) {
         serchRusultAdapter.setList(singleSearchResults);
+
     }
 
     @Override
@@ -156,4 +158,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, objects);
         spinner.setAdapter(adapter);
     }
+
+
 }
