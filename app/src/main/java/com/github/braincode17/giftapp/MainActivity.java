@@ -6,20 +6,19 @@ import android.support.v4.view.ViewPager;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.github.braincode17.giftapp.SearchList.BaseSearchResult;
 import com.github.braincode17.giftapp.SearchList.SearchService;
-import com.github.braincode17.giftapp.SearchList.SingleGalleryImage;
-import com.github.braincode17.giftapp.SearchList.SingleSearchResult;
 
+import butterknife.OnClick;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -34,14 +33,25 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
 
-    String urlSearch = "http://inspiracje.allegro.pl/api/offers/";
+    private String tag = "allegropl";
+    private String price = "0";
+    private String listing = "random";
+    private String defUrl = "https://inspiracje.allegro.pl/api/";
+    private String urlSearch = "http://inspiracje.allegro.pl/api/offers/";
     private Retrofit retrofit;
+
+    private static final String[] tags = {"inspirującego","dla niej", "dla niego", "dla dziecka", "dla domu", "z prezentów"};
+    private static final String[] prices = {"dowolnej kwoty", "50 zł", "100 zł", "200 zł"};
+    private static final String[] listings = {"losowo", "najtańszych", "najdroższych", "najpopularniejszych"};
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;
 
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
+
+    @BindView(R.id.spinner)
+    Spinner spinner;
 
     List<BaseSearchResult> itemsList;
     private ItemsPagerAdapter adapter;
@@ -58,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(urlSearch).build();
 
-        updatedSearch("dlaniej", "200", "random");
+        updatedSearch(tag, price, listing);
 
         tabLayout.setupWithViewPager(viewPager);
         itemsList = new ArrayList<>();
@@ -66,8 +76,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         adapter = new ItemsPagerAdapter(itemsList, sharedPreferences);
         viewPager.setAdapter(adapter);
+
+
     }
-    
+
     private void updatedSearch(String tag, String price, String sort) {
         SearchService searchService = retrofit.create(SearchService.class);
         searchService.search(tag, price, sort)
@@ -100,12 +112,29 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == android.R.id.home) {
             super.onBackPressed();
         }
+        else if(item.getItemId() == R.id.search_tag){
+            setSpinner(tags);
+
+        }
         else if(item.getItemId() == R.id.search_price){
             Log.d("menu_item", "wybór ceny");
+
+            setSpinner(prices);
+
         }
         else if(item.getItemId() == R.id.search_listing){
             Log.d("menu_item", "wybór kolejności");
+
+            setSpinner(listings);
+
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void setSpinner(String[] objects) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, objects);
+        spinner.setAdapter(adapter);
+        spinner.setVisibility(View.VISIBLE);
+    }
+    
 }

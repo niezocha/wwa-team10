@@ -9,6 +9,9 @@ import retrofit2.http.Query;
 
 public interface SearchService {
 
+    @GET("grids")
+    Observable<List<SingleSearchResult>> searchGrid();
+
     @GET("filter")
     Observable<List<SingleSearchResult>> search(@Query("tag") String tag,
                                                 @Query("price_to") String priceTo,
