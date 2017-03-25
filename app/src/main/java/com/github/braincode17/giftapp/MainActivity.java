@@ -5,13 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -32,6 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class MainActivity extends AppCompatActivity implements OnItemClick {
 
@@ -78,8 +77,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
         serchRusultAdapter = new SerchRusultAdapter();
         serchRusultAdapter.setOnItemClick(this);
         recyclerView.setAdapter(serchRusultAdapter);
-
     }
+
 
     private void updatedSearch() {
         queryGenerator.updateQuery();
@@ -189,4 +188,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
         spinner.setAdapter(adapter);
         spinner.setVisibility(View.VISIBLE);
     }
+
+
 }
