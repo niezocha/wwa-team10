@@ -36,11 +36,9 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements OnItemClick{
 
-
     private String tag = "allegropl";
     private String price = "0";
     private String sort = "random";
-    private String defUrl = "https://inspiracje.allegro.pl/api/";
     private String urlSearch = "http://inspiracje.allegro.pl/api/offers/";
     private Retrofit retrofit;
 
@@ -56,9 +54,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
     Map<String, String> tagsMap;
     Map<String, String> pricesMap;
     Map<String, String> sortingsMap;
-
-
-
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -122,13 +117,16 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        tagsMap = generateMap(tags, tagsVal);
+        pricesMap = generateMap(prices, pricesVal);
+        sortingsMap = generateMap(sorting, sortingVal);
+
         retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(urlSearch).build();
 
         updatedSearch();
-
 
         itemsList = new ArrayList<>();
 
@@ -138,15 +136,12 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
         serchRusultAdapter.setOnItemClick(this);
         recyclerView.setAdapter(serchRusultAdapter);
 
-
-
-        tagsMap = generateMap(tags, tagsVal);
-        pricesMap = generateMap(prices, pricesVal);
-        sortingsMap = generateMap(sorting, sortingVal);
-
     }
 
     private void updatedSearch() {
+        setTag();
+        setPrice();
+        setSort();
         SearchService searchService = retrofit.create(SearchService.class);
         searchService.search(tag, price, sort)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -240,8 +235,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     @Override
     public void onItemClick(String id, String url, String title, String price, String shippPirce, String shippTime) {
