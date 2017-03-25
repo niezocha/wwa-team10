@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
     }
 
     private void updatedSearch() {
-        queryGenerator.updateUrlGenerator();
+        queryGenerator.updateQuery();
         SearchService searchService = retrofit.create(SearchService.class);
         searchService.search(queryGenerator.getTag(), queryGenerator.getPrice(), queryGenerator.getSort())
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -162,9 +162,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
                 }
             });
         } else if (item.getItemId() == R.id.search_clear) {
-            queryGenerator.setTagSelected("inspirującego");
-            queryGenerator.setPriceSelected("dowolnej kwoty");
-            queryGenerator.setSortSelected("losowo");
+            queryGenerator.clearQuery();
             spinner.setVisibility(View.GONE);
             updatedSearch();
         }

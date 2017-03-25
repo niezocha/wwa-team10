@@ -108,9 +108,16 @@ public class QueryGenerator {
         return map;
     }
 
-    public void updateUrlGenerator(){
+    public void updateQuery(){
         setTag();
         setPrice();
         setSort();
     }
+
+    public void clearQuery(){
+        setTagSelected("inspirującego");
+        setPriceSelected("dowolnej kwoty");
+        setSortSelected("losowo");
+    }
+
 }
