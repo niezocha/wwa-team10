@@ -18,6 +18,7 @@ import com.github.braincode17.giftapp.SearchList.OnItemClick;
 import com.github.braincode17.giftapp.SearchList.SearchService;
 import com.github.braincode17.giftapp.singleItem.SingleItemActivity;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,11 +76,13 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
     private void updatedSearch() {
         urlGenerator.updateUrlGenerator();
         SearchService searchService = retrofit.create(SearchService.class);
+        NumberFormat format = NumberFormat.getInstance();
+        format.setMinimumFractionDigits(2);
         searchService.search(urlGenerator.getTag(), urlGenerator.getPrice(), urlGenerator.getSort())
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(Observable::fromIterable)
                 .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getItemId(), singleSearchResult.getGalleryImage().getUrl(), singleSearchResult.getName(),
-                        singleSearchResult.getPrice(), String.valueOf(singleSearchResult.getDeliveryCost()), String.valueOf(singleSearchResult.getDeliveryTime())))
+                        String.valueOf(format.format(singleSearchResult.getPrice())), String.valueOf(singleSearchResult.getDeliveryCost()), String.valueOf(singleSearchResult.getDeliveryTime())))
                 .toList()
                 .subscribe(this::success, this::error
                 );
