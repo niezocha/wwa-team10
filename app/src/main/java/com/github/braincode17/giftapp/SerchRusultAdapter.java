@@ -40,7 +40,7 @@ public class SerchRusultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClick.onMovieItemClick(list.get(position).getItemId(), list.get(position).getItemImage(), list.get(position).getName(), list.get(position).getItemPrice(),
+                onItemClick.onItemClick(list.get(position).getItemId(), list.get(position).getItemImage(), list.get(position).getName(), list.get(position).getItemPrice(),
                         list.get(position).getShippPrice(), list.get(position).getShippTime());
 
             }

@@ -57,8 +57,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
     Map<String, String> pricesMap;
     Map<String, String> sortingsMap;
 
-    @BindView(R.id.view_pager)
-    ViewPager viewPager;
+
 
 
     @BindView(R.id.recycler_view)
@@ -130,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
 
         updatedSearch();
 
-        tabLayout.setupWithViewPager(viewPager);
+
         itemsList = new ArrayList<>();
 
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -138,10 +137,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
         serchRusultAdapter = new SerchRusultAdapter();
         serchRusultAdapter.setOnItemClick(this);
         recyclerView.setAdapter(serchRusultAdapter);
-        updatedSearch("dlaniej", "200", "random");
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        adapter = new ItemsPagerAdapter(itemsList, sharedPreferences);
-        viewPager.setAdapter(adapter);
+
 
 
         tagsMap = generateMap(tags, tagsVal);
@@ -149,8 +145,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
         sortingsMap = generateMap(sorting, sortingVal);
 
     }
-
-    private void updatedSearch(String tag, String price, String sort) {
 
     private void updatedSearch() {
         SearchService searchService = retrofit.create(SearchService.class);
@@ -250,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
 
 
     @Override
-    public void onMovieItemClick(String id, String url, String title, String price, String shippPirce, String shippTime) {
+    public void onItemClick(String id, String url, String title, String price, String shippPirce, String shippTime) {
         Intent intent = SingleItemActivity.createIntent(this, id, url, title, price, shippPirce, shippTime);
         startActivity(intent);
     }
