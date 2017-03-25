@@ -31,27 +31,30 @@
 
         <TextView
             android:id="@+id/item_price"
-            tools:text="Kup teraz: 19.99"
-            android:textSize="20sp"
-            android:layout_margin="5dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textSize="20sp"
+            tools:text="Kup teraz: 19.99" />
 
         <TextView
             android:id="@+id/item_shippingtime"
-            tools:text="Dostawa: 9.99"
-            android:textSize="20sp"
-            android:layout_margin="5dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textSize="20sp"
+            android:layout_gravity="right"
+            tools:text="Dostawa: 9.99" />
 
         <TextView
             android:id="@+id/item_shippingprice"
-            tools:text="Czas dostawy: 2 dni"
-            android:textSize="20sp"
-            android:layout_margin="5dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textSize="20sp"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center_horizontal"
+            tools:text="Czas dostawy: 2 dni" />
 
     </GridLayout>
 

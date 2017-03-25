@@ -1,6 +1,8 @@
 package com.github.braincode17.giftapp.SearchList;
 
 
+import android.util.Log;
+
 public class BaseSearchResult {
 
     private String itemId;

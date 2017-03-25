@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(Observable::fromIterable)
                 .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getItemId(), singleSearchResult.getGalleryImage().getUrl(), singleSearchResult.getName(),
-                        singleSearchResult.getPrice(), String.valueOf(singleSearchResult.getDeliveryCost()), String.valueOf(singleSearchResult.getDaliveryTime())))
+                        singleSearchResult.getPrice(), String.valueOf(singleSearchResult.getDeliveryCost()), String.valueOf(singleSearchResult.getDeliveryTime())))
                 .toList()
                 .subscribe(this::success, this::error
                 );
