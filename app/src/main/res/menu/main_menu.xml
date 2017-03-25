@@ -17,9 +17,16 @@
         />
 
     <item
-        android:id="@+id/search_listing"
+        android:id="@+id/search_sorting"
         android:title="listing"
         android:icon="@drawable/ic_search_listing"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/search_clear"
+        android:title="listing"
+        android:icon="@drawable/ic_clear"
         app:showAsAction="always"
         />
 
