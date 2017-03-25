@@ -1,8 +1,8 @@
 package com.github.braincode17.giftapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,19 +12,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.github.braincode17.giftapp.SearchList.BaseSearchResult;
 import com.github.braincode17.giftapp.SearchList.OnItemClick;
 import com.github.braincode17.giftapp.SearchList.SearchService;
 import com.github.braincode17.giftapp.singleItem.SingleItemActivity;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +25,12 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements OnItemClick{
 
@@ -147,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick{
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(Observable::fromIterable)
                 .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getItemId(), singleSearchResult.getGalleryImage().getUrl(), singleSearchResult.getName(),
-                        String.valueOf(singleSearchResult.getPrice()), String.valueOf(singleSearchResult.getDeliveryCost()), String.valueOf(singleSearchResult.getDaliveryTime())))
+                        singleSearchResult.getPrice(), String.valueOf(singleSearchResult.getDeliveryCost()), String.valueOf(singleSearchResult.getDaliveryTime())))
                 .toList()
                 .subscribe(this::success, this::error
                 );

@@ -1,13 +1,11 @@
 package com.github.braincode17.giftapp.SearchList;
 
 
-import java.math.BigDecimal;
-
 public class SingleSearchResult {
 
     private String id;
     private String name;
-    private BigDecimal price;
+    private String price;
     private int addedAt;
     private int endAt;
     private String status;
@@ -30,7 +28,7 @@ public class SingleSearchResult {
         return name;
     }
 
-    public BigDecimal getPrice() {
+    public String getPrice() {
         return price;
     }
 
