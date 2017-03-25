@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
     private Retrofit retrofit;
     private LinearLayoutManager layoutManager;
     private SerchRusultAdapter serchRusultAdapter;
+    private int queryCounter;
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_gift);
+        queryCounter = 0;
 
         retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -121,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
         SearchService searchService = retrofit.create(SearchService.class);
         NumberFormat format = NumberFormat.getInstance();
         format.setMinimumFractionDigits(2);
-        searchService.search(queryGenerator.getTag(), queryGenerator.getPrice(), queryGenerator.getSort())
+        searchService.search(queryGenerator.getTag(), queryGenerator.getPrice(), queryGenerator.getSort(), String.valueOf(queryCounter))
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(Observable::fromIterable)
                 .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getItemId(), singleSearchResult.getGalleryImage().getUrl(), singleSearchResult.getName(),
@@ -148,5 +150,20 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
     private void setSpinner(String[] objects, Spinner spinner) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, objects);
         spinner.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.single_item_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            queryCounter += 10;
+            updatedSearch();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

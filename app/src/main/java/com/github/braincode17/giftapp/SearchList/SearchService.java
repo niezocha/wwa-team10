@@ -15,6 +15,6 @@ public interface SearchService {
     @GET("filter")
     Observable<List<SingleSearchResult>> search(@Query("tag") String tag,
                                                 @Query("price_to") String priceTo,
-                                                @Query("sort") String sortBy);
+                                                @Query("sort") String sortBy, @Query("skip") String skip);
 
 }
