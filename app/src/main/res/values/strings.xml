@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Allegro inspiracje</string>
     <string name="zl">zł</string>
+    <string name="chooser">otwieranie storny allegro..</string>
+    <string name="see">zobacz na allegro</string>
 </resources>

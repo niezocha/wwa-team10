@@ -1,8 +1,6 @@
 package com.github.braincode17.giftapp;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +9,20 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.github.braincode17.giftapp.SearchList.BaseSearchResult;
+import com.github.braincode17.giftapp.SearchList.OnItemClick;
 
 import java.util.Collections;
 import java.util.List;
 
-import static butterknife.ButterKnife.findById;
+
 
 
 public class SerchRusultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private List<BaseSearchResult> list = Collections.emptyList();
+    private OnItemClick onItemClick;
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,9 +37,14 @@ public class SerchRusultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         MyViewHolder myViewHolder = (MyViewHolder) holder;
         myViewHolder.price.setText(currentResult.getItemPrice());
         Glide.with(myViewHolder.image.getContext()).load(currentResult.getItemImage()).into(myViewHolder.image);
-        Log.d("result im", currentResult.getItemImage());
-        Log.d("result t", currentResult.getItemPrice());
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClick.onMovieItemClick(list.get(position).getItemId(), list.get(position).getItemImage(), list.get(position).getName(), list.get(position).getItemPrice(),
+                        list.get(position).getShippPrice(), list.get(position).getShippTime());
 
+            }
+        });
     }
 
     public void setList(List<BaseSearchResult> list) {
@@ -49,6 +55,10 @@ public class SerchRusultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public void setOnItemClick(OnItemClick onItemClick) {
+        this.onItemClick = onItemClick;
     }
 
 

@@ -2,7 +2,6 @@ package com.github.braincode17.giftapp;
 
 import android.content.SharedPreferences;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
