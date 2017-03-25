@@ -1,13 +1,13 @@
 package com.github.braincode17.giftapp.SearchList;
 
 
-import java.math.BigDecimal;
+import android.util.Log;
 
 public class SingleSearchResult {
 
     private String id;
     private String name;
-    private BigDecimal price;
+    private String price;
     private int addedAt;
     private int endAt;
     private String status;
@@ -16,7 +16,7 @@ public class SingleSearchResult {
     private int currentQty;
     private int deliveryCost;
     private boolean isFreeDelivery;
-    private int daliveryTime;
+    private int deliveryTime;
     private int startQty;
     private boolean isRecommended;
     private SingleGalleryImage galleryImage;
@@ -30,7 +30,7 @@ public class SingleSearchResult {
         return name;
     }
 
-    public BigDecimal getPrice() {
+    public String getPrice() {
         return price;
     }
 
@@ -59,6 +59,7 @@ public class SingleSearchResult {
     }
 
     public int getDeliveryCost() {
+        Log.d("koszt dostawy", String.valueOf(deliveryCost));
         return deliveryCost;
     }
 
@@ -66,8 +67,9 @@ public class SingleSearchResult {
         return isFreeDelivery;
     }
 
-    public int getDaliveryTime() {
-        return daliveryTime;
+    public int getDeliveryTime() {
+        Log.d("czas dostawy", String.valueOf(deliveryTime));
+        return deliveryTime;
     }
 
     public int getStartQty() {

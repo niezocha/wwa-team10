@@ -35,7 +35,7 @@ public class SerchRusultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         BaseSearchResult currentResult = list.get(position);
         MyViewHolder myViewHolder = (MyViewHolder) holder;
-        myViewHolder.price.setText(currentResult.getItemPrice());
+        myViewHolder.price.setText(String.valueOf(currentResult.getItemPrice()));
         Glide.with(myViewHolder.image.getContext()).load(currentResult.getItemImage()).into(myViewHolder.image);
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
