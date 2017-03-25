@@ -67,13 +67,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ItemsPagerAdapter(itemsList, sharedPreferences);
         viewPager.setAdapter(adapter);
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
+    
     private void updatedSearch(String tag, String price, String sort) {
         SearchService searchService = retrofit.create(SearchService.class);
         searchService.search(tag, price, sort)
@@ -92,6 +86,12 @@ public class MainActivity extends AppCompatActivity {
     private void success(List<BaseSearchResult> singleSearchResults) {
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
