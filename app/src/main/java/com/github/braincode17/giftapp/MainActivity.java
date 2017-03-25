@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
 
     private QueryGenerator queryGenerator = new QueryGenerator();
     private Retrofit retrofit;
-    private List<BaseSearchResult> itemsList;
     private LinearLayoutManager layoutManager;
     private SerchRusultAdapter serchRusultAdapter;
 
@@ -67,14 +66,11 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
 
         updatedSearch();
 
-        itemsList = new ArrayList<>();
-
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         serchRusultAdapter = new SerchRusultAdapter();
         serchRusultAdapter.setOnItemClick(this);
         recyclerView.setAdapter(serchRusultAdapter);
-
 
         setSpinner(queryGenerator.getTags(), spinnerTag);
         setSpinner(queryGenerator.getPrices(), spinnerPrice);
@@ -84,11 +80,10 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String tagSelected = spinnerTag.getItemAtPosition(position).toString();
-                if (!tagSelected.equals("inspirującego")) {
-                    queryGenerator.setTagSelected(tagSelected);
-                    updatedSearch();
-                }
+                queryGenerator.setTagSelected(tagSelected);
+                updatedSearch();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -98,11 +93,10 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String priceSelected = spinnerPrice.getItemAtPosition(position).toString();
-                if (!priceSelected.equals("dowolnej kwoty")) {
-                    queryGenerator.setPriceSelected(priceSelected);
-                    updatedSearch();
-                }
+                queryGenerator.setPriceSelected(priceSelected);
+                updatedSearch();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -112,17 +106,16 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String sortSelected = spinnerSort.getItemAtPosition(position).toString();
-                if (!sortSelected.equals("losowo")) {
-                    queryGenerator.setSortSelected(sortSelected);
-                    updatedSearch();
-                }
+                queryGenerator.setSortSelected(sortSelected);
+                updatedSearch();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
     }
-    
+
     private void updatedSearch() {
         queryGenerator.updateQuery();
         SearchService searchService = retrofit.create(SearchService.class);
@@ -139,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
     }
 
     private void error(Throwable throwable) {
-        Toast.makeText(this, "Błąd pobierania danych. Sprawdź połączenie do sieci.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.no_results, Toast.LENGTH_LONG).show();
     }
 
     private void success(List<BaseSearchResult> singleSearchResults) {

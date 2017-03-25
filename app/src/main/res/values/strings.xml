@@ -5,4 +5,5 @@
     <string name="see">allegro</string>
     <string name="send">wyślij</string>
     <string name="app_name">AllePrezent</string>
+    <string name="no_results">Błąd pobierania danych. Sprawdź połączenie do sieci.</string>
 </resources>
