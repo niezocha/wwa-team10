@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClick {
         SearchService searchService = retrofit.create(SearchService.class);
         NumberFormat format = NumberFormat.getInstance();
         format.setMinimumFractionDigits(2);
-                searchService.search(queryGenerator.getTag(), queryGenerator.getPrice(), queryGenerator.getSort())
+        searchService.search(queryGenerator.getTag(), queryGenerator.getPrice(), queryGenerator.getSort())
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(Observable::fromIterable)
                 .map(singleSearchResult -> new BaseSearchResult(singleSearchResult.getItemId(), singleSearchResult.getGalleryImage().getUrl(), singleSearchResult.getName(),
