@@ -12,22 +12,14 @@ public class QueryGenerator {
 
     private static final String[] tags = {"inspirującego", "dla niej", "dla niego", "dla dziecka", "dla domu", "z prezentów"};
     private static final String[] tagsVal = {"allegropl", "dlaniej", "dlaniego", "dziecko", "dom", "gadzet"};
-
     private static final String[] prices = {"dowolnej kwoty", "do 50 zł", "do 100 zł", "do 200 zł"};
     private static final String[] pricesVal = {"0", "50", "100", "200"};
-
     private static final String[] sorting = {"losowo", "najtańszych", "najdroższych", "najpopularniejszych"};
     private static final String[] sortingVal = {"random", "cheapest", "most_expensive", "most_popular"};
 
-    Map<String, String> tagsMap;
-    Map<String, String> pricesMap;
-    Map<String, String> sortingsMap;
-
-    {
-        tagsMap = generateMap(tags, tagsVal);
-        pricesMap = generateMap(prices, pricesVal);
-        sortingsMap = generateMap(sorting, sortingVal);
-    }
+    private Map<String, String> tagsMap = generateMap(tags, tagsVal);
+    private Map<String, String> pricesMap = generateMap(prices, pricesVal);
+    private Map<String, String> sortingsMap = generateMap(sorting, sortingVal);
 
     private String tagSelected;
     private String priceSelected;
@@ -76,18 +68,6 @@ public class QueryGenerator {
         this.sort = sort;
     }
 
-    public String getTagSelected() {
-        return tagSelected;
-    }
-
-    public String getPriceSelected() {
-        return priceSelected;
-    }
-
-    public String getSortSelected() {
-        return sortSelected;
-    }
-
     public void setTagSelected(String tagSelected) {
         this.tagSelected = tagSelected;
     }
@@ -119,5 +99,4 @@ public class QueryGenerator {
         setPriceSelected("dowolnej kwoty");
         setSortSelected("losowo");
     }
-
 }
