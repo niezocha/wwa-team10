@@ -70,7 +70,6 @@ public class SingleSearchResult {
     }
 
     public int getDeliveryTime() {
-        Log.d("czas dostawy", String.valueOf(deliveryTime));
         return deliveryTime;
     }
 
@@ -82,8 +81,8 @@ public class SingleSearchResult {
         return isRecommended;
     }
 
-   public SingleGalleryImage getGalleryImage(){
+    public SingleGalleryImage getGalleryImage() {
 
-       return galleryImage;
-   }
+        return galleryImage;
+    }
 }
